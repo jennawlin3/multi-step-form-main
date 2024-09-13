@@ -449,8 +449,8 @@ input[type="radio"] {
         box-shadow: none;
     }
 
-    .form-container {
-        padding-right: 80px;
+    .form-container, .button-container {
+        padding-right: 60px;
     }
 
     .desktop-aside {
