@@ -449,6 +449,10 @@ input[type="radio"] {
         box-shadow: none;
     }
 
+    .form-container {
+        padding-right: 80px;
+    }
+
     .desktop-aside {
         display: flex;
         flex-direction: column;
