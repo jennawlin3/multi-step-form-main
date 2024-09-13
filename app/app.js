@@ -209,7 +209,7 @@ $checkboxContainer.forEach((checkbox,index) => {
 
 
     checkbox.addEventListener("click", e => {
-
+        e.stopPropagation();
         if(e) {
             checkbox.classList.toggle("active");
 
@@ -222,7 +222,7 @@ $checkboxContainer.forEach((checkbox,index) => {
                         name: $inputCheckboxContainer[index].value,
                         price: $addonPrice[index].textContent,
                     }
-                    //console.log(addOns)
+                    console.log(addOns)
                 } else {
                     return;
                 }
@@ -442,7 +442,7 @@ $changeBtn.addEventListener("click", e => {
         })    
     }
 });
-
+/*
 $mobilePagination.forEach((step,index) => {
     step.addEventListener("click", e => {
         let stepNumber;
@@ -508,7 +508,7 @@ $desktopPagination.forEach((s,index) => {
         }
     })
 });
-
+*/
 $confirmBtn.addEventListener("click", e => {
     let objValues = Object.keys(user);
     let addOnsValues = Object.keys(addOns);
@@ -552,6 +552,21 @@ $confirmBtn.addEventListener("click", e => {
      }
 
      createcheckOut(user);
+
+     setTimeout(() => {
+        $desktopPagination.forEach(btn => {
+            if(btn.getAttribute("data-id") === "one") {
+                btn.classList.add("active");
+            } else {
+                btn.classList.remove("active");
+            }
+        });
+
+        $mobilePagination[0].classList.add("active");
+        $mobilePagination[3].classList.remove("active");
+        $modalContainer.classList.add("hide");
+        $container[0].classList.remove("hide");
+     },5000)
 })
 
 
