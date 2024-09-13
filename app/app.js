@@ -1,8 +1,13 @@
 const $errorMessage = document.querySelectorAll(".error");
 const $nextBtn = document.querySelectorAll(".next-btn");
+const $backBtn = document.querySelectorAll(".back-btn");
 const $container = document.querySelectorAll(".container");
 const $mobilePagination = document.querySelectorAll(".step");
 const $desktopPagination = document.querySelectorAll(".circle-step");
+const $confirmBtn = document.querySelector(".confirm-btn");
+const $modalContainer = document.querySelector(".thanks-modal");
+const $form = document.querySelectorAll("form");
+const $toggleCircle = document.querySelector("#plan-billing");
 
 // First Section
 //Inputs
@@ -71,8 +76,7 @@ $nameInput.addEventListener("input", e => {
             $nameInput.classList.remove("invalid");
         } else {
             $errorMessage[0].classList.remove("hide");
-            $nameInput.classList.add("invalid");
-            console.log("no valido");            
+            $nameInput.classList.add("invalid");           
         }
     }
 });
@@ -135,8 +139,7 @@ $optionContainer.forEach((cont, index) => {
                 planChoice.name = $inputOptionContainer[i].value;
                 planChoice.price = $planPrice[i].textContent;
                 planChoice.id = index+1;
-                /*planChoice.push(, $planPrice[i].textContent);*/
-                console.log(planChoice);
+                //console.log(planChoice);
                 } else {
                     $optionContainer[i].classList.remove("active");
                 }
@@ -158,6 +161,8 @@ $togglePlan.addEventListener("click", e => {
 
             $timePlan.forEach(span => {
                 span.textContent = "mo";
+                $montlyLabel.classList.add("yearly");
+                $yearlyLabel.classList.remove("yearly");
             });
                 $togglePlan.classList.remove("yearly");
                 $planMeasureTime.textContent = "Monthly";
@@ -179,8 +184,8 @@ $togglePlan.addEventListener("click", e => {
                 $checkboxContainer[index].classList.remove("active");
         });
 
-        $montlyLabel.classList.toggle("active");
-        $yearlyLabel.classList.toggle("active");
+        $montlyLabel.classList.remove("yearly");
+        $yearlyLabel.classList.add("yearly");
         $togglePlan.classList.toggle("yearly");
         $planMeasureTime.textContent = "Yearly";
         $totalMeasureTime.textContent = "year";
@@ -217,7 +222,7 @@ $checkboxContainer.forEach((checkbox,index) => {
                         name: $inputCheckboxContainer[index].value,
                         price: $addonPrice[index].textContent,
                     }
-                    console.log(addOns)
+                    //console.log(addOns)
                 } else {
                     return;
                 }
@@ -255,6 +260,17 @@ $nextBtn.forEach(btn => {
                     user.name = nameVal;
                     user.email = emailVal;
                     user.phone = phoneVal;
+
+                    for(let i = 0; i < $desktopPagination.length; i++) {
+
+                        if($desktopPagination[i].getAttribute("data-id") === "two") {
+                            //console.log($desktopPagination[i]);
+                            $desktopPagination[i].classList.add("active");
+                            
+                        } else {
+                            $desktopPagination[i].classList.remove("active");
+                        }
+                    }
                 }
             }
 
@@ -271,6 +287,16 @@ $nextBtn.forEach(btn => {
                 $desktopPagination[actualId].classList.add("active");
                 user.planChoice = planChoice;
                  
+                for(let i = 0; i < $desktopPagination.length; i++) {
+
+                    if($desktopPagination[i].getAttribute("data-id") === "three") {
+                        //console.log($desktopPagination[i]);
+                        $desktopPagination[i].classList.add("active");
+                        
+                    } else {
+                        $desktopPagination[i].classList.remove("active");
+                    }
+                }
                 }
             }
 
@@ -285,21 +311,80 @@ $nextBtn.forEach(btn => {
                 $mobilePagination[actualId].classList.add("active");
                 $desktopPagination[actualId].classList.add("active");
                 user.addOns = addOns;
-                createcheckOut(user) 
+                createcheckOut(user);
+                
+                for(let i = 0; i < $desktopPagination.length; i++) {
+
+                    if($desktopPagination[i].getAttribute("data-id") === "four") {
+                        //console.log($desktopPagination[i]);
+                        $desktopPagination[i].classList.add("active");
+                        
+                    } else {
+                        $desktopPagination[i].classList.remove("active");
+                    }
+                }
                 }
             }
         }
     })
 });
 
+$backBtn.forEach(btn => {
+    btn.addEventListener("click", e => {
+        if(e) {
+            let idCont = e.target.getAttribute("data-id");
+
+            $container.forEach((cont, i) => {
+                if(idCont === cont.getAttribute("id")) {
+                    $container[Number(i)-1].classList.remove("hide");
+                    //console.log($container[Number(i)-1]);
+                } 
+                    $container[Number(i)].classList.add("hide");
+                    //console.log($container[Number(i)]);
+            });
+
+            for(let i = 0; i < $mobilePagination.length; i++) {
+                //console.log($mobilePagination[i].getAttribute("data-id"));
+                //console.log(idCont);
+                if($mobilePagination[i].getAttribute("data-id") === idCont) {
+                    $mobilePagination[i-1].classList.add("active");
+                    
+                }
+                    $mobilePagination[i].classList.remove("active");
+            }
+                
+            for(let i = 0; i < $desktopPagination.length; i++) {
+                //console.log($desktopPagination[i].getAttribute("data-id"));
+                 //console.log(idCont);
+                if($desktopPagination[i].getAttribute("data-id") === idCont) {
+                    $desktopPagination[i-1].classList.add("active");
+                    
+                }
+                    $desktopPagination[i].classList.remove("active");
+            }
+        }
+    })
+})
+
 // Section 4 
 function createcheckOut(user) {
+    let userValues = Object.keys(user);
+
+    if(userValues.length === 0) {
+        $planChoice.textContent = "Not plan selected";
+        $planChoicePrice.textContent = 0;
+        $addOnsContainer.textContent = "";
+    
+        $totalBill.textContent = 0;
+        return;       
+    }
+
     let addOns = Object.entries(user.addOns);
     let addOnsPrices = [];
     $addOnsContainer.textContent = "";
 
     addOns.forEach(aO => {
-        console.log(aO[1]);
+         //console.log(aO[1]);
         const addOnsContainer = document.createElement("div");
         addOnsContainer.classList.add("add-ons_container");
         const addOnsChoice = document.createElement("h4");
@@ -331,7 +416,7 @@ function createcheckOut(user) {
     
     let totalAddOns = addOnsPrices.reduce((accum, curr) => Number(accum) + Number(curr));
 
-    console.log(user);
+     //console.log(user);
     $planChoice.textContent = user.planChoice.name;
     $planChoicePrice.textContent = user.planChoice.price;
 
@@ -371,7 +456,18 @@ $mobilePagination.forEach((step,index) => {
                 } else {
                     $mobilePagination[i].classList.remove("active");
                     $container[i].classList.add("hide");
+                    $modalContainer.classList.add("hide");
                 }
+
+                
+                $desktopPagination.forEach(s => {
+                    if(s.getAttribute("data-id") === stepNumber) {
+                      s.classList.add("active")
+                    } else {
+                        s.classList.remove("active");
+                        $modalContainer.classList.add("hide");
+                    }
+                })
             }
         }
     })
@@ -382,18 +478,27 @@ $desktopPagination.forEach((s,index) => {
         let stepNumber;
         if(e) {
             stepNumber = e.target.getAttribute("data-id");
-            console.log(stepNumber);
+             //console.log(stepNumber);
             for(let i = 0; i < $desktopPagination.length; i++) {
-                console.log(i);
+                 //console.log(i);
                 if($desktopPagination[i].getAttribute("data-id") === stepNumber) {
                     $desktopPagination[i].classList.add("active");
                 } else {
-                    $desktopPagination[i].classList.remove("active");      
+                    $desktopPagination[i].classList.remove("active");
+                    $modalContainer.classList.add("hide");      
                 }
+
+                $mobilePagination.forEach(step => {
+                    if(step.getAttribute("data-id") === stepNumber) {
+                      step.classList.add("active")
+                    } else {
+                        step.classList.remove("active");
+                    $modalContainer.classList.add("hide");
+                    }
+                })
             }
 
             $container.forEach(cont => {
-                console.log(cont.getAttribute("data-id"));
                 if(cont.getAttribute("id") === stepNumber) {
                     cont.classList.remove("hide");
                 } else {
@@ -403,6 +508,51 @@ $desktopPagination.forEach((s,index) => {
         }
     })
 });
+
+$confirmBtn.addEventListener("click", e => {
+    let objValues = Object.keys(user);
+    let addOnsValues = Object.keys(addOns);
+    let planChoiceValues = Object.entries(planChoice);
+
+    if(objValues.length < 5) {
+        return;
+    }
+
+    $container.forEach(cont => {
+        cont.classList.add("hide");
+    })
+    $modalContainer.classList.remove("hide");
+
+    $form.forEach(form => {
+        form.reset();
+    });
+
+     for(prop of objValues) {
+        delete user[prop];
+     }
+
+     for(prop of addOnsValues) {
+        delete addOns[prop];
+     }
+
+     planChoiceValues.forEach((array,i) => {
+        delete planChoice.name;
+        delete planChoice.price;
+        delete planChoice.id;
+     });
+
+     $optionContainer.forEach((cont,i) => {
+        cont.classList.remove("active");
+        $checkboxContainer[i].classList.remove("active");
+     });
+
+     if(toggleActive === true) {
+        $togglePlan.classList.add("yearly");
+        $toggleCircle.checked = true;
+     }
+
+     createcheckOut(user);
+})
 
 
 
