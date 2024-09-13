@@ -209,7 +209,7 @@ $checkboxContainer.forEach((checkbox,index) => {
 
 
     checkbox.addEventListener("click", e => {
-        e.stopPropagation();
+        ;
         if(e) {
             checkbox.classList.toggle("active");
 
@@ -552,6 +552,9 @@ $confirmBtn.addEventListener("click", e => {
      }
 
      createcheckOut(user);
+     validEmail = false;
+     validName = false;
+     validPhone = false;
 
      setTimeout(() => {
         $desktopPagination.forEach(btn => {
@@ -566,7 +569,8 @@ $confirmBtn.addEventListener("click", e => {
         $mobilePagination[3].classList.remove("active");
         $modalContainer.classList.add("hide");
         $container[0].classList.remove("hide");
-     },5000)
+     },5000);
+
 })
 
 
