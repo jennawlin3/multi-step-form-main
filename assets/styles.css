@@ -309,11 +309,13 @@ input[type="radio"] {
 
 .plan-choice {
     color: var(--marine-blue);
+    text-transform: capitalize;
 }
 
 .add-ons-choice {
-    color: var(--cool-gray);
+    color: var(--cool-gray) !important;
     font-weight: 400;
+    text-transform: capitalize;
 }
 
 .plan-choice_price, .add-ons_choice__price {
