@@ -66,6 +66,7 @@ $nameInput.addEventListener("input", e => {
         if(nameVal.length === 0) {
             $errorMessage[0].classList.remove("hide");
             $nameInput.classList.add("invalid");
+            validName = false;   
         } else {
             $errorMessage[0].classList.add("hide");
             $nameInput.classList.remove("invalid");
@@ -76,7 +77,8 @@ $nameInput.addEventListener("input", e => {
             $nameInput.classList.remove("invalid");
         } else {
             $errorMessage[0].classList.remove("hide");
-            $nameInput.classList.add("invalid");           
+            $nameInput.classList.add("invalid");
+            validName = false;              
         }
     }
 });
@@ -88,6 +90,7 @@ $emailInput.addEventListener("input", e => {
         if(emailVal.length === 0) {
             $errorMessage[1].classList.remove("hide");
             $emailInput.classList.add("invalid");
+            validEmail = false;   
         } else {
             $errorMessage[1].classList.add("hide");
             $emailInput.classList.remove("invalid");
@@ -98,7 +101,8 @@ $emailInput.addEventListener("input", e => {
             $emailInput.classList.remove("invalid");
         } else {
             $errorMessage[1].classList.remove("hide");
-            $emailInput.classList.add("invalid");            
+            $emailInput.classList.add("invalid");
+            validEmail = false;               
         }
     }
 });
@@ -110,9 +114,10 @@ $phoneInput.addEventListener("input", e => {
         if(phoneVal.length === 0) {
             $errorMessage[2].classList.remove("hide");
             $phoneInput.classList.add("invalid");
+            validPhone = false;   
         } else {
             $errorMessage[2].classList.add("hide");
-            $phoneInput.classList.remove("invalid");
+            $phoneInput.classList.remove("invalid");  
         }
 
         if(phonePattern.test(phoneVal)) {
@@ -120,7 +125,8 @@ $phoneInput.addEventListener("input", e => {
             $phoneInput.classList.remove("invalid");
         } else {
             $errorMessage[2].classList.remove("hide");
-            $phoneInput.classList.add("invalid");            
+            $phoneInput.classList.add("invalid");
+            validPhone = false;               
         }
     }
 });
